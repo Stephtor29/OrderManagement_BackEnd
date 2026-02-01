@@ -286,7 +286,7 @@ namespace OrderManagement.DataAccess.Repositories
         }
 
 
-        public OrdenDto GetOrdenConDetalles(int? id)
+        public Orden GetOrdenConDetalles(int? id)
         {
             if (id == null || id <= 0)
             {
@@ -300,24 +300,26 @@ namespace OrderManagement.DataAccess.Repositories
                 var parameter = new DynamicParameters();
                 parameter.Add("@OrdenId", id, DbType.Int64, ParameterDirection.Input);
 
-                OrdenDto ordenResult = null;
+                Orden ordenResult = null;
 
-                db.Query<OrdenDto, DetalleOrdenDto, OrdenDto>(
+                db.Query<Orden, DetalleOrden, Orden>(
                     ScriptDataBase.Orden_Buscar,
                     (orden, detalle) =>
                     {
+                        // Solo la primera vez: inicializa el objeto
                         ordenResult ??= orden;
-                        ordenResult.Detalles ??= new List<DetalleOrdenDto>();
+                        ordenResult.DetalleOrden ??= new List<DetalleOrden>();
 
+                        // Solo agrega si hay detalle real (LEFT JOIN puede dar NULL)
                         if (detalle?.DetalleOrdenId != 0)
                         {
-                            ordenResult.Detalles.Add(detalle);
+                            ordenResult.DetalleOrden.Add(detalle);
                         }
 
                         return ordenResult;
                     },
                     parameter,
-                    splitOn: "DetalleOrdenId",
+                    splitOn: "DetalleOrdenId",  // Desde aquí mapea al segundo objeto
                     commandType: CommandType.StoredProcedure
                 );
 

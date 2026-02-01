@@ -9,7 +9,7 @@ namespace OrderManagement.DataAccess.Repositories
       
         /// Listar todos los productos
         
-        public IEnumerable<Producto> List()
+        public virtual IEnumerable<Producto> List()
         {
             var parameter = new DynamicParameters();
 
@@ -31,8 +31,8 @@ namespace OrderManagement.DataAccess.Repositories
         }
 
         /// Buscar producto por ID
-   
-        public Producto Find(int? id)
+
+        public virtual Producto Find(int? id)
         {
             if (id == null || id <= 0)
             {
@@ -62,7 +62,7 @@ namespace OrderManagement.DataAccess.Repositories
       
         /// Insertar nuevo producto
         
-        public RequestStatus Insert(Producto item)
+        public virtual  RequestStatus Insert(Producto item)
         {
             if (item == null)
             {
@@ -113,7 +113,7 @@ namespace OrderManagement.DataAccess.Repositories
       
         /// Actualizar producto existente
         
-        public RequestStatus Update(Producto item)
+        public virtual RequestStatus Update(Producto item)
         {
             if (item == null)
             {
@@ -164,7 +164,7 @@ namespace OrderManagement.DataAccess.Repositories
       
         /// Eliminar producto
         
-        public RequestStatus Delete(int? id)
+        public virtual RequestStatus Delete(int? id)
         {
             if (id == null || id <= 0)
             {
